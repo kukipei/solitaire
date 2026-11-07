@@ -13,7 +13,10 @@ function Card() {
 
   function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
     if (!dragging) return;
-    setPos({ x: e.clientX - offset.current.x, y: e.clientY - offset.current.y });
+    setPos({
+      x: e.clientX - offset.current.x,
+      y: e.clientY - offset.current.y,
+    });
   }
 
   function onPointerUp(e: React.PointerEvent<HTMLDivElement>) {
@@ -34,10 +37,16 @@ function Card() {
         userSelect: "none",
         position: "relative",
         zIndex: dragging ? 1000 : "auto",
-        width: "fit-content",
+        width: "clamp(60px, 12vw, 146px)",
+        aspectRatio: "146 / 198",
       }}
     >
-      <img src="/karta.jpeg" alt="karta" draggable={false} />
+      <img
+        src="/karta.jpeg"
+        alt="karta"
+        draggable={false}
+        style={{ width: "100%", height: "auto", display: "block" }}
+      />
     </div>
   );
 }
