@@ -109,3 +109,39 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+.playing-area {
+  --card-w: clamp(36px, 8vw, 146px);
+  --card-h: calc(var(--card-w) * 198 / 146); /* matches Card aspect-ratio */
+  --card-gap: clamp(4px, 1.5vw, 16px);
+  --card-peek: calc(var(--card-h) * 0.22); /* visible strip of a covered card */
+  display: grid;
+  grid-template-columns: repeat(10, var(--card-w));
+  justify-content: center;
+  align-items: start; /* piles keep their own height */
+  gap: var(--card-gap);
+  padding: var(--card-gap);
+}
+
+.pile {
+  display: flex;
+  flex-direction: column;
+  min-height: var(--card-h); /* empty pile keeps its slot */
+}
+
+/* each card after the first slides up under the previous one */
+.pile > :not(:first-child) {
+  margin-top: calc(var(--card-peek) - var(--card-h));
+}
+
+section {
+  display: flex;
+}
+
+.deck div {
+  display: flex;
+}
+
+.deck {
+  justify-content: space-around;
+}
