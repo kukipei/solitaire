@@ -3,9 +3,10 @@ import { useRef, useState } from "react";
 type CardProps = {
   imageUrl: string;
   isDraggable?: boolean;
+  onDrop?: (clientX: number, clientY: number) => void;
 };
 
-function Card({ imageUrl, isDraggable = true }: CardProps) {
+function Card({ imageUrl, isDraggable = true, onDrop }: CardProps) {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
   const offset = useRef({ x: 0, y: 0 });
@@ -30,7 +31,9 @@ function Card({ imageUrl, isDraggable = true }: CardProps) {
     if (!dragging) return;
     e.currentTarget.releasePointerCapture(e.pointerId);
     setDragging(false);
-    // later: check the drop target here and snap back if the move is invalid
+    onDrop?.(e.clientX, e.clientY);
+    // back to normal flow: the card sits in its (new or old) pile slot
+    setPos({ x: 0, y: 0 });
   }
 
   return (
@@ -45,6 +48,7 @@ function Card({ imageUrl, isDraggable = true }: CardProps) {
         userSelect: "none",
         position: "relative",
         zIndex: dragging ? 1000 : "auto",
+        transition: dragging ? "none" : "transform 150ms ease",
         width: "var(--card-w)",
         aspectRatio: "146 / 198",
       }}
